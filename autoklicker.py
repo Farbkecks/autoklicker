@@ -1,5 +1,6 @@
 import keyboard
 from time import sleep
+import threading
 
 
 def get_key():
@@ -35,6 +36,22 @@ def get_time():
             exit(0)
     return time
 
+def change_on():
+    global on, start_key
+    if on:
+        x.start()
+        on = False
+        sleep(1)
+    if not on:
+        x.stop()
+        on = True
+        sleep(1)
+
+def loop():
+    while on:
+        keyboard.send(key)
+        sleep(time)
+
 if __name__ == "__main__":
     key = get_key()
     time = get_time()
@@ -42,17 +59,10 @@ if __name__ == "__main__":
     start_key = 66 # F8
     on = False
     print("F8 drücken um zu starten")
-    while True:
-        sleep(.001)
-        if keyboard.is_pressed(start_key) and not on:
-            print("Schleife an")
-            on = True
-        elif keyboard.is_pressed(start_key) and on:
-            print("Schleife aus")
-            on = False
-            sleep(4)
+
+    x = threading.Thread(target=loop, daemon=True)
+
+    keyboard.add_hotkey(start_key, change_on)
+    keyboard.wait()
         
-        if on:
-            keyboard.send(key)
-            sleep(time)
 
