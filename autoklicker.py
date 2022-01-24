@@ -36,21 +36,10 @@ def get_time():
             exit(0)
     return time
 
-def change_on():
-    global on, start_key
-    if on:
-        x.start()
-        on = False
-        sleep(1)
-    if not on:
-        x.stop()
-        on = True
-        sleep(1)
 
-def loop():
-    while on:
-        keyboard.send(key)
-        sleep(time)
+def loop(key, time):
+    sleep(time)
+    keyboard.send(key)
 
 if __name__ == "__main__":
     key = get_key()
@@ -60,9 +49,6 @@ if __name__ == "__main__":
     on = False
     print("F8 drücken um zu starten")
 
-    x = threading.Thread(target=loop, daemon=True)
-
-    keyboard.add_hotkey(start_key, change_on)
-    keyboard.wait()
+    x = threading.Thread(target=loop,args=(key,time) , daemon=True)
         
 
