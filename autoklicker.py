@@ -59,7 +59,7 @@ if __name__ == "__main__":
             while keyboard.is_pressed(start_key):
                 sleep(.1)
 
-        elif keyboard.is_pressed(start_key) and on:
+        if keyboard.is_pressed(start_key) and on:
             print("Schleife aus")
             on = False
             while keyboard.is_pressed(start_key):
